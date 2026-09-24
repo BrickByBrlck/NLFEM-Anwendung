@@ -14,12 +14,8 @@ E_tt: Green-Lagrange-Verzerrung in Stabrichtung
 
 
 def stress(E_tt: float, Emod: float) -> float:
-    """S_tt = Emod * E_tt.
-
-    TODO: implementieren.
-    """
+    """S_tt = Emod * E_tt."""
     return E_tt*Emod
-    raise NotImplementedError("TODO: S_tt = Emod * E_tt")
 
 
 def tangent_modulus(E_tt: float, Emod: float) -> float:
@@ -29,7 +25,5 @@ def tangent_modulus(E_tt: float, Emod: float) -> float:
     von E_tt) — der Parameter E_tt ist trotzdem Teil der Signatur, weil sich
     das bei einem nichtlinearen Materialgesetz (z.B. spaeter Plastizitaet)
     aendern wuerde.
-
-    TODO: implementieren.
     """
     return Emod

@@ -5,11 +5,6 @@ Beispiel fuer geometrisch nichtlineares Verhalten mit einem
 
 Knoten 0 und 2 sind Auflager (fest), Knoten 1 ist frei und wird mit einer
 nach unten wachsenden Kraft belastet.
-
-Erst main.py ausfuehren, wenn material.py, element.py, assembly.py,
-newton_raphson.py und load_stepping.py implementiert sind -- vorher bricht
-es mit NotImplementedError an der Stelle ab, wo als Naechstes etwas fehlt.
-Das ist Absicht, siehe README.md.
 """
 import numpy as np
 import matplotlib.pyplot as plt
