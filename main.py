@@ -15,7 +15,7 @@ import postprocess
 # --- Geometrie ---
 nodes = np.array([
     [0.0, 0.0],   # Knoten 0: Auflager links
-    [1.0, 14],   # Knoten 1: Spitze, frei
+    [1.0, 0.5],   # Knoten 1: Spitze, frei
     [2.0, 0.0],   # Knoten 2: Auflager rechts
 ])
 elements = [(0, 1), (1, 2),(2,0)]

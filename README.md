@@ -88,3 +88,46 @@ sondern weil reine Lastkontrolle an einem Grenzpunkt (limit point)
 grundsätzlich versagt. Genau dafür gibt es Bogenlängenverfahren
 (Arc-Length-Methods), die hier bewusst nicht implementiert sind. Guter
 Diskussionspunkt für deinen Chef, falls das Thema noch kommt.
+
+---
+
+# Projekt 2: 2D-Eiffelturm unter Wind
+
+Derselbe Code, eine neue Struktur. `material.py`, `element.py`,
+`assembly.py`, `newton_raphson.py` und `load_stepping.py` bleiben
+**unveraendert** -- sie funktionieren fuer jedes 2D-Fachwerk, egal ob 3 oder
+300 Knoten. Neu sind nur Geometrie und Lasten.
+
+| Datei | Zweck | Musst du ausfuellen? |
+|---|---|---|
+| `geometry.py` | Knoten, Staebe und Auflager des Turms erzeugen | **Ja** |
+| `loads.py` | Windlast und Eigengewicht als Lastvektor | **Ja** |
+| `main_eiffel.py` | alles zusammenstecken und plotten | Nein, fertig |
+
+## Reihenfolge
+
+1. `geometry.py`: `half_width` → `eiffel_2d` → `base_dofs`
+2. `loads.py`: `wind_load` → `self_weight`
+3. Nach jeder Funktion `py selbsttest.py` -- der Abschnitt "Projekt 2" zeigt,
+   was schon stimmt
+4. `py main_eiffel.py`
+
+Der wichtigste Check ist **"Fachwerk steif?"**: Fehlt ein Stab, kann sich
+der Turm ohne Stabdehnung bewegen (Mechanismus), `K_T` wird singulaer und
+Newton bricht mit `LinAlgError: Singular matrix` ab. Der Selbsttest sagt dir
+dann, wie viele Bewegungsmoeglichkeiten zu viel sind.
+
+## Zum Ausprobieren, wenn es laeuft
+
+- `wind_total` in `main_eiffel.py` auf 20, 50, 100 -- wird die
+  Last-Verschiebungs-Kurve krumm?
+- `rho_g = 0` (ohne Eigengewicht) vs. `rho_g = 1`
+- In `eiffel_2d` testweise eine Diagonale weglassen -> Mechanismus
+- `n_levels` auf 3 oder 20
+
+## Moegliche naechste Schritte
+
+- Querschnitt `A` pro Stab (Beine dick, Diagonalen duenn)
+- Staebe nach Stabkraft `N` einfaerben (Zug rot, Druck blau)
+- Der typische Bogen zwischen den Beinen unten
+- 3D-Fachwerk
