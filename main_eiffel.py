@@ -14,12 +14,16 @@ import load_stepping
 import postprocess
 
 # --- Geometrie (Einheiten frei gewaehlt, etwa Massstab 1:100) ---
-nodes, elements = geometry.eiffel_2d(n_levels=8, height=3.0,
-                                     base_half_width=0.625, top_half_width=0.05)
+nodes, elements = geometry.eiffel_2d(n_levels=15, height=300,
+                                     base_half_width=62.5, top_half_width=5,
+                                     spire=30)
 
 # --- Material & Querschnitt ---
-Emod = 1000.0
-A = 1.0
+Emod = 200000
+masse = 7300.0                       # Eisenmasse des Turms in t
+dichte = 7.8                         # Puddeleisen in t/m^3
+L_total = sum(np.linalg.norm(nodes[n2] - nodes[n1]) for n1, n2 in elements)
+A = masse / (dichte * L_total)       # Querschnitt so, dass der Turm immer 7300 t wiegt
 
 # --- Randbedingungen: beide Fusspunkte fest ---
 n_dofs = 2 * nodes.shape[0]
@@ -27,8 +31,8 @@ fixed_dofs = geometry.base_dofs()
 free_dofs = [d for d in range(n_dofs) if d not in fixed_dofs]
 
 # --- Lasten: Wind von links + Eigengewicht ---
-wind_total = 10.0                    # gesamte Windkraft; mal 5, 20, 50 probieren
-rho_g = 1.0                          # Gewicht pro Volumen (0 = ohne Eigengewicht)
+wind_total = 3                    # gesamte Windkraft; mal 5, 20, 50 probieren
+rho_g = 0.0765                          # Gewicht pro Volumen (0 = ohne Eigengewicht)
 F_max = loads.wind_load(nodes, wind_total) + loads.self_weight(nodes, elements, rho_g, A)
 
 # --- Loesen ---
@@ -48,7 +52,7 @@ axes[0].set_ylabel("Windkraft gesamt")
 axes[0].set_title("Last-Verschiebungs-Kurve (Spitze)")
 axes[0].grid(True)
 postprocess.plot_convergence(last_residuals, ax=axes[1])
-postprocess.plot_structure(nodes, elements, disp_history[-1], scale=1.0, ax=axes[2])
+postprocess.plot_structure(nodes, elements, disp_history[-1], scale=1, ax=axes[2])
 plt.tight_layout()
 plt.show()
 

@@ -29,18 +29,16 @@ import element
 
 
 def wind_load(nodes, total_force, alpha=0.16):
-    """Horizontale Windlast, nach oben staerker werdend (Formel siehe oben).
+    """Horizontale Windlast, nach oben staerker werdend (Formel siehe oben). """
 
-    TODO:
-      1. y = nodes[:, 1] und H = y.max()
-      2. Gewichte fuer alle Knoten: (y / H) ** alpha
-         (Fusspunkte haben y = 0 und damit automatisch Gewicht 0)
-      3. F = np.zeros(2 * len(nodes))
-      4. F[0::2] = total_force * gewichte / gewichte.sum()
-         (F[0::2] waehlt jeden zweiten Eintrag ab 0 aus = alle x-Komponenten)
-      5. return F
-    """
-    raise NotImplementedError("TODO: wind_load")
+    y = nodes[:,1]
+    H=y.max()
+    
+    gewichte=(y/H) ** alpha
+
+    F= np.zeros(2*len(nodes))
+    F[0::2] = total_force*gewichte/gewichte.sum()
+    return F
 
 
 def self_weight(nodes, elements, rho_g, A):
@@ -55,4 +53,13 @@ def self_weight(nodes, elements, rho_g, A):
              (welcher Index in F ist die y-Komponente von Knoten n1?)
       3. return F
     """
-    raise NotImplementedError("TODO: self_weight")
+    F= np.zeros(2*len(nodes))
+    for n1,n2 in elements:
+        L0 = element.reference_length(nodes[n1], nodes[n2])
+        G = rho_g * A * L0
+
+        F[2*n1+1]-= G/2
+        F[2*n2+1]-= G/2
+    return F
+
+    

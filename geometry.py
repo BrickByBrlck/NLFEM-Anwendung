@@ -1,4 +1,4 @@
-r"""
+"""
 Geometrie des 2D-Eiffelturms: Knoten, Staebe, Auflager.
 
 Der Turm besteht aus n_levels Etagen. Jede Etage i (i = 0 ... n_levels) hat
@@ -53,41 +53,46 @@ import numpy as np
 
 
 def half_width(y, height, base_half_width, top_half_width):
-    """Halbe Turmbreite w(y) auf Hoehe y (Formel siehe oben).
+    """Halbe Turmbreite w(y) auf Hoehe y (Formel siehe oben)."""
 
-    TODO:
-      1. k = np.log(base_half_width / top_half_width) / height
-      2. return base_half_width * np.exp(-k * y)
-    """
-    raise NotImplementedError("TODO: half_width")
+    k = np.log(base_half_width / top_half_width) / height
+
+    return base_half_width * np.exp(-k*y)
+
 
 
 def eiffel_2d(n_levels=8, height=3.0, base_half_width=0.625, top_half_width=0.05,
               spire=0.3):
+    nodes=[]
+    for i in range(n_levels + 1):
+        y=height*i/n_levels
+        w= half_width(y,height,base_half_width,top_half_width)
+
+        nodes.append([-w,y])
+        nodes.append([w,y])
+
+    nodes.append([0.0, height+spire])
+    nodes=np.array(nodes)
+
+    elements=[]
+    for i in range(n_levels):
+      L=2*i
+      R=2*i+1
+      L0=2*i+2
+      R0=2*i+3
+      elements.extend([(L,L0),(R,R0),(L0,R0),(L,R0),(R,L0)])
+
+    apex=len(nodes)-1
+    
+    elements.extend([(2*n_levels,apex),(2*n_levels+1,apex)])
+    return nodes, elements
     """Erzeugt Knoten und Staebe des 2D-Eiffelturms.
 
     Rueckgabe:
       nodes:    np.array der Form (2*(n_levels+1) + 1, 2) mit [x, y] je Knoten
       elements: Liste von (n1, n2)-Paaren, 5*n_levels + 2 Stueck
-
-    TODO:
-      1. Knoten: leere Liste nodes = []
-         fuer i in range(n_levels + 1):
-           - y = height * i / n_levels
-           - w = half_width(y, height, base_half_width, top_half_width)
-           - links [-w, y] und rechts [w, y] anhaengen (genau in der Reihenfolge!)
-         zum Schluss die Spitze [0.0, height + spire] anhaengen
-         und nodes = np.array(nodes)
-      2. Staebe: leere Liste elements = []
-         fuer i in range(n_levels):
-           - L, R, Lo, Ro = 2*i, 2*i+1, 2*i+2, 2*i+3
-           - die 5 Staebe des Etagenfelds anhaengen (siehe Liste oben)
-         dann die 2 Staebe zur Spitze: (2*n_levels, apex), (2*n_levels+1, apex)
-         mit apex = len(nodes) - 1
-      3. return nodes, elements
     """
-    raise NotImplementedError("TODO: eiffel_2d")
-
+    
 
 def base_dofs():
     """Fixierte DOFs: beide Fusspunkte (Knoten 0 und 1) in x und y.
@@ -95,4 +100,5 @@ def base_dofs():
     TODO: Knoten i belegt die DOFs [2*i, 2*i+1] (wie in assembly.py).
           Welche 4 DOFs sind das fuer Knoten 0 und 1? Als Liste zurueckgeben.
     """
+    return [0,1,2,3]
     raise NotImplementedError("TODO: base_dofs")
