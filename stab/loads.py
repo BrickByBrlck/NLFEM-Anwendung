@@ -25,7 +25,7 @@ Eigengewicht:
 """
 import numpy as np
 
-import element
+from stab import element
 
 
 def wind_load(nodes, total_force, alpha=0.16):

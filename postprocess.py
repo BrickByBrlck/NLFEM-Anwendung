@@ -49,3 +49,24 @@ def plot_structure(nodes, elements, u, scale=1.0, ax=None):
     ax.legend()
     ax.set_title(f"Struktur (Skalierung x{scale})")
     return ax
+
+
+def plot_mesh_q4(nodes, elements, u, scale=1.0, ax=None):
+    """Unverformtes vs. verformtes Q4-Netz."""
+    if ax is None:
+        _, ax = plt.subplots()
+    n_nodes = nodes.shape[0]
+    u = np.asarray(u).reshape(n_nodes, 2)
+    deformed = nodes + scale * u
+
+    for i, conn in enumerate(elements):
+        ring = list(conn) + [conn[0]]
+        ax.plot(nodes[ring, 0], nodes[ring, 1], "k--", alpha=0.4, linewidth=0.8,
+                 label="unverformt" if i == 0 else None)
+        ax.plot(deformed[ring, 0], deformed[ring, 1], "b-", linewidth=1.2,
+                 label="verformt" if i == 0 else None)
+
+    ax.set_aspect("equal")
+    ax.legend()
+    ax.set_title(f"Netz (Skalierung x{scale})")
+    return ax

@@ -35,7 +35,7 @@ Variablennamen/Struktur als in den Kursdateien.
 """
 import numpy as np
 
-import material
+from stab import material
 
 
 def reference_length(X1: np.ndarray, X2: np.ndarray) -> float:

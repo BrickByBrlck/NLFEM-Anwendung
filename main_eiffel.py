@@ -3,14 +3,13 @@
 
 Verwendet unveraendert dieselben Module wie das Von-Mises-Fachwerk
 (element, assembly, newton_raphson, load_stepping) -- neu sind nur die
-Geometrie (geometry.py) und die Lasten (loads.py).
+Geometrie (stab/geometry.py) und die Lasten (stab/loads.py).
 """
 import numpy as np
 import matplotlib.pyplot as plt
 
-import geometry
-import loads
-import load_stepping
+from stab import geometry, loads
+from loeser import load_stepping
 import postprocess
 
 # --- Geometrie (Einheiten frei gewaehlt, etwa Massstab 1:100) ---

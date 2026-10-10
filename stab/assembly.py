@@ -10,7 +10,7 @@ Reihenfolge [u1x,u1y,u2x,u2y] in element.py).
 """
 import numpy as np
 
-import element
+from stab import element
 
 
 def dofs_of_element(n1: int, n2: int) -> list:

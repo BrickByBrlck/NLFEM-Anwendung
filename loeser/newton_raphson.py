@@ -19,7 +19,7 @@ ist meistens die geometrische Steifigkeit (K_geo) falsch oder vergessen.
 """
 import numpy as np
 
-import assembly
+from stab import assembly
 
 
 def solve_load_step(nodes, elements, u0, F_ext, free_dofs, Emod, A,
@@ -57,3 +57,32 @@ def solve_load_step(nodes, elements, u0, F_ext, free_dofs, Emod, A,
         u[free_dofs] += delta_u_frei
 
     return u,residual_norms
+
+
+# ---------------------------------------------------------------------------
+# Projekt 3: derselbe Loeser, aber ohne Wissen ueber das Element
+# ---------------------------------------------------------------------------
+
+def solve(assemble_fn, u0, F_ext, free_dofs, tol=1e-8, max_iter=30):
+    """Newton-Raphson fuer EINEN Lastschritt, unabhaengig vom Elementtyp.
+
+    solve_load_step oben ruft fest stab.assembly.assemble(nodes, elements, u, Emod, A)
+    auf und kann deshalb nur Staebe. Der Newton-Ablauf selbst braucht aber gar
+    nicht zu wissen, was ein Element ist -- er braucht nur etwas, das ihm zu
+    einem u die Groessen F_int und K_T liefert. Genau das ist assemble_fn:
+
+        F_int, K_T = assemble_fn(u)
+
+    Der Aufrufer baut sich diese Funktion passend zusammen, z.B. fuer Staebe
+
+        assemble_fn = lambda u: stab.assembly.assemble(nodes, elements, u, Emod, A)
+
+    und fuer Q4-Elemente
+
+        assemble_fn = lambda u: q4.assembly.assemble(nodes, elements, u, lam, mu, t)
+
+    Der Rest ist Zeile fuer Zeile dein solve_load_step.
+
+    Rueckgabe: (u, residual_norms) wie bei solve_load_step.
+    """
+    raise NotImplementedError("TODO: solve")

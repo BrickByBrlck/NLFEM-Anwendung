@@ -8,7 +8,7 @@ eine gute Startschaetzung fuer den naechsten -- das ist der ganze Trick.
 """
 import numpy as np
 
-from newton_raphson import solve_load_step
+from loeser.newton_raphson import solve_load_step
 
 
 def run(nodes, elements, F_max, free_dofs, Emod, A, n_steps=20):
@@ -38,3 +38,23 @@ def run(nodes, elements, F_max, free_dofs, Emod, A, n_steps=20):
         disp_history.append(u.copy())
 
     return np.array(load_history), np.array(disp_history), res_norms
+
+
+# ---------------------------------------------------------------------------
+# Projekt 3: dieselbe Laststeigerung, aber ohne Wissen ueber das Element
+# ---------------------------------------------------------------------------
+
+def run_general(assemble_fn, n_dofs, F_max, free_dofs, n_steps=20, tol=1e-8):
+    """Wie run(), aber mit assemble_fn statt (nodes, elements, Emod, A).
+
+    Ruft pro Lastschritt newton_raphson.solve(assemble_fn, u, F_ext, free_dofs,
+    tol=tol) auf (solve oben in der Import-Zeile ergaenzen). assemble_fn: siehe dort.
+
+    n_dofs: Laenge des globalen Verschiebungsvektors (frueher 2*len(nodes))
+
+    Rueckgabe:
+      disp_history:   (n_steps+1, n_dofs) Verschiebung nach jedem Lastschritt,
+                       Zeile 0 ist der unbelastete Zustand
+      last_residuals: Liste der ||R_frei||-Werte des LETZTEN Lastschritts
+    """
+    raise NotImplementedError("TODO: run_general")

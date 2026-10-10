@@ -9,7 +9,7 @@ nach unten wachsenden Kraft belastet.
 import numpy as np
 import matplotlib.pyplot as plt
 
-import load_stepping
+from loeser import load_stepping
 import postprocess
 
 # --- Geometrie ---
