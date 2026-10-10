@@ -91,6 +91,7 @@ from q4 import material
 
 def jacobian(X_e: np.ndarray, dN_dxi: np.ndarray) -> np.ndarray:
     """J (2, 2) mit J[i, j] = dX_i/dxi_j."""
+    return X_e.T @ dN_dxi
     raise NotImplementedError("TODO: jacobian")
 
 
@@ -101,6 +102,15 @@ def physical_gradients(X_e: np.ndarray, xi: float, eta: float):
       dN_dX: (4, 2)  Zeile I = [dN_I/dX, dN_I/dY]
       detJ:  Zahl
     """
+    dN_dxi_local = shape.shape_derivatives(xi,eta)
+    J = jacobian(X_e,dN_dxi_local)
+    detJ = np.linalg.det(J)
+    J_inv = np.linalg.inv(J)
+    dN_dX =dN_dxi_local @ J_inv
+    return dN_dX, detJ
+
+
+
     raise NotImplementedError("TODO: physical_gradients")
 
 

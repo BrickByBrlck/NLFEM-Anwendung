@@ -85,6 +85,6 @@ def gauss_points():
         [+a, +a],
         [-a, +a]
         ])
-    weights = np.array([1.0,1.0,1.0,1.0])
+    weights = np.array([1.0, 1.0, 1.0, 1.0])
     return points, weights
     

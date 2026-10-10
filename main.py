@@ -18,7 +18,7 @@ nodes = np.array([
     [1.0, 0.5],   # Knoten 1: Spitze, frei
     [2.0, 0.0],   # Knoten 2: Auflager rechts
 ])
-elements = [(0, 1), (1, 2),(2,0)]
+elements = [(0, 1), (1, 2)]
 
 # --- Material & Querschnitt ---
 Emod = 1000.0
@@ -30,7 +30,7 @@ fixed_dofs = [0, 1, 4, 5]           # Knoten 0 (ux,uy) und Knoten 2 (ux,uy) fest
 free_dofs = [d for d in range(n_dofs) if d not in fixed_dofs]
 
 # --- Last: nach unten an Knoten 1 (DOF 3 = uy von Knoten 1) ---
-F_max_mag = 45                   # sicher unterhalb des Snap-Through-Punkts (~36)
+F_max_mag = 10                   # sicher unterhalb des Snap-Through-Punkts (~36)
 F_max = np.zeros(n_dofs)
 F_max[3] = -F_max_mag
 
